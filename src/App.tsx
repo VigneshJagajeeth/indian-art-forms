@@ -194,33 +194,6 @@ export default function App() {
                 <Compass className="w-4 h-4 text-amber-300" />
                 <span>Explore Interactive Atlas</span>
               </button>
-
-              <button
-                onClick={() => setIsCompareOpen(true)}
-                className="px-5 py-2.5 rounded-xl bg-white hover:bg-stone-50 text-stone-800 border border-stone-300 font-serif font-medium text-sm shadow-sm transition-all flex items-center gap-2 cursor-pointer"
-              >
-                <ArrowRightLeft className="w-4 h-4 text-amber-800" />
-                <span>Side-by-Side Comparison</span>
-              </button>
-            </div>
-
-            {/* Quick Jumps to Landmark Traditions */}
-            <div className="pt-2">
-              <span className="text-[11px] uppercase tracking-wider text-stone-500 font-semibold block mb-2 font-sans">
-                Quick Jump to Landmark Traditions:
-              </span>
-              <div className="flex flex-wrap items-center gap-2">
-                {QUICK_JUMPS.map((qj) => (
-                  <button
-                    key={qj.id}
-                    onClick={() => handleQuickJump(qj.id)}
-                    className="inline-flex items-center gap-1.5 px-3 py-1 bg-stone-100/90 hover:bg-amber-100/80 text-stone-700 hover:text-amber-950 rounded-lg text-xs font-serif transition-colors border border-stone-200/80 cursor-pointer"
-                  >
-                    <span>{qj.icon}</span>
-                    <span>{qj.label}</span>
-                  </button>
-                ))}
-              </div>
             </div>
           </div>
 
@@ -315,41 +288,6 @@ export default function App() {
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-
-        {/* Operational / Curatorial Metric Strip */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-10 pt-6 border-t border-stone-200/80">
-          <div>
-            <span className="text-xs uppercase tracking-wider text-stone-500 font-medium block">
-              Historic Epicenters
-            </span>
-            <span className="text-2xl font-serif font-bold text-stone-900 tabular-nums">18 Schools</span>
-            <span className="text-[11px] text-stone-500 block">Kashmir to Kaveri</span>
-          </div>
-
-          <div>
-            <span className="text-xs uppercase tracking-wider text-stone-500 font-medium block">
-              Cultural Diffusion Arcs
-            </span>
-            <span className="text-2xl font-serif font-bold text-amber-900 tabular-nums">9 Lineages</span>
-            <span className="text-[11px] text-stone-500 block">Reciprocal Influence Routes</span>
-          </div>
-
-          <div>
-            <span className="text-xs uppercase tracking-wider text-stone-500 font-medium block">
-              Chronological Span
-            </span>
-            <span className="text-2xl font-serif font-bold text-stone-900 tabular-nums">12,000 Years</span>
-            <span className="text-[11px] text-stone-500 block">Mesolithic to Modernism</span>
-          </div>
-
-          <div>
-            <span className="text-xs uppercase tracking-wider text-stone-500 font-medium block">
-              Curatorial Archives
-            </span>
-            <span className="text-2xl font-serif font-bold text-amber-800 tabular-nums">Verified</span>
-            <span className="text-[11px] text-stone-500 block">Museum & Archaeological Records</span>
           </div>
         </div>
       </section>
@@ -454,94 +392,10 @@ export default function App() {
             <span aria-hidden="true">·</span>
             <span>Click any marker to open its curatorial dossier</span>
           </div>
-
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setIsCompareOpen(true)}
-              className="flex items-center gap-1.5 text-amber-900 font-medium hover:underline cursor-pointer text-xs"
-            >
-              <ArrowRightLeft className="w-3.5 h-3.5" />
-              <span>Launch Side-by-Side Comparison</span>
-            </button>
-          </div>
         </div>
       </section>
 
-      {/* Section 2: Geographic Spread & Cultural Diffusion Analysis */}
-      <section ref={diffusionSectionRef} className="px-4 sm:px-6 py-12 max-w-7xl mx-auto border-t border-stone-200 space-y-8">
-        <div>
-          <div className="flex items-center gap-2 text-xs uppercase tracking-widest text-amber-900 font-semibold font-sans mb-1">
-            <Compass className="w-4 h-4 text-amber-800" />
-            <span>Cultural Geography & Style Migration</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight">
-            Geographic Spread & Artistic Migration Across India
-          </h2>
-          <p className="text-base font-serif text-stone-600 italic mt-1 max-w-2xl text-balance">
-            Indian art did not develop in isolation. Royal ateliers migrated during wars, pilgrims carried sacred
-            scrolls along river trade networks, and modernists looked to ancient tribal geometries.
-          </p>
-        </div>
 
-        {/* Diffusion Channels Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {INFLUENCE_PATHS.slice(0, 6).map((path) => {
-            const src = ART_LOCATIONS.find((l) => l.id === path.sourceId);
-            const tgt = ART_LOCATIONS.find((l) => l.id === path.targetId);
-            if (!src || !tgt) return null;
-
-            return (
-              <div
-                key={path.id}
-                className="p-5 bg-white rounded-2xl border border-stone-200 shadow-sm hover:shadow-md transition-shadow space-y-3 flex flex-col justify-between"
-              >
-                <div>
-                  <div className="flex items-center justify-between text-xs text-stone-500 font-mono mb-2">
-                    <span>{path.eraContext}</span>
-                    <span className="text-amber-800 font-medium">Migration Artery</span>
-                  </div>
-
-                  <h3 className="text-lg font-serif font-bold text-stone-900 leading-snug">
-                    {path.title}
-                  </h3>
-
-                  <div className="flex items-center gap-2 my-3 text-xs font-medium text-stone-700 bg-stone-50 p-2.5 rounded-lg border border-stone-200">
-                    <span className="font-serif text-amber-900 font-semibold">{src.name}</span>
-                    <ArrowRight className="w-3.5 h-3.5 text-stone-400" />
-                    <span className="font-serif text-amber-900 font-semibold">{tgt.name}</span>
-                  </div>
-
-                  <p className="text-xs text-stone-600 leading-relaxed font-sans">
-                    {path.description}
-                  </p>
-                </div>
-
-                <div className="pt-3 border-t border-stone-100 flex items-center justify-between text-xs">
-                  <button
-                    onClick={() => {
-                      handleSelectLocation(src);
-                      handleScrollToMap();
-                    }}
-                    className="text-stone-600 hover:text-stone-900 transition-colors"
-                  >
-                    View Origin ({src.state})
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleSelectLocation(tgt);
-                      handleScrollToMap();
-                    }}
-                    className="text-amber-900 font-medium hover:underline flex items-center gap-1"
-                  >
-                    <span>View Successor</span>
-                    <ArrowRight className="w-3 h-3" />
-                  </button>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
 
       {/* Section 3: Comprehensive Archive Directory of Regional Schools */}
       <section ref={catalogSectionRef} className="px-4 sm:px-6 py-12 max-w-7xl mx-auto border-t border-stone-200 space-y-8">
@@ -635,12 +489,6 @@ export default function App() {
               className="hover:text-stone-900 transition-colors cursor-pointer"
             >
               Chronological Timeline
-            </button>
-            <button
-              onClick={() => setIsCompareOpen(true)}
-              className="hover:text-stone-900 transition-colors cursor-pointer"
-            >
-              Compare Schools
             </button>
           </div>
         </div>

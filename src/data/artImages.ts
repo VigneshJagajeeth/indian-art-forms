@@ -10,45 +10,35 @@ export interface MasterpieceImageMap {
 export const ART_MASTERPIECE_IMAGES: Record<string, MasterpieceImageMap> = {
   // 1. Ajanta Caves - Bodhisattva Padmapani Cave 1 (5th c. CE, Gupta-Vakataka)
   ajanta: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Padmapani.jpg/800px-Padmapani.jpg',
-    sourceAttribution: 'Archaeological Survey of India / UNESCO World Heritage Archive',
-    museumOrSite: 'Ajanta Cave 1, Aurangabad District, Maharashtra'
+    imageUrl: '/assets/ajanta.jpg',
+    sourceAttribution: 'Generated Visualization',
+    museumOrSite: 'Ajanta Cave 1, Aurangabad District'
   },
-  // 2. Mithila / Madhubani - Traditional Sacred Folk Art (Bihar)
   madhubani: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Madhubani_painting.jpg/800px-Madhubani_painting.jpg',
-    sourceAttribution: 'National Crafts Museum Archive, New Delhi',
-    museumOrSite: 'Mithila Cultural Heritage, Jitwarpur, Madhubani, Bihar'
+    imageUrl: '/assets/madhubani.jpg',
+    sourceAttribution: 'Generated Visualization',
+    museumOrSite: 'Mithila Cultural Heritage'
   },
-  // 3. Thanjavur (Tanjore) - Navaneetha Krishna with Gilded 22k Gold Foil & Gemstones
   thanjavur: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/Tanjore_painting_of_Krishna.jpg/800px-Tanjore_painting_of_Krishna.jpg',
-    sourceAttribution: 'Thanjavur Art Gallery / Government Museum Chennai',
-    museumOrSite: 'Tanjore Royal Maratha Collection, Tamil Nadu'
+    imageUrl: '/assets/thanjavur.jpg',
+    sourceAttribution: 'Generated Visualization',
+    museumOrSite: 'Tanjore Royal Collection'
   },
-  // 4. Kishangarh - Radha of Kishangarh (Bani Thani) by Nihal Chand (c. 1750 CE)
   kishangarh: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/Radha_of_Kishangarh.jpg/800px-Radha_of_Kishangarh.jpg',
-    sourceAttribution: 'National Museum, New Delhi (Rajput Court Atelier)',
-    museumOrSite: 'Kishangarh Royal Collection, Rajasthan'
+    imageUrl: '/assets/kishangarh.jpg',
+    sourceAttribution: 'Generated Visualization',
+    museumOrSite: 'Kishangarh Royal Collection'
   },
-  // 5. Kangra & Basohli - Radha & Krishna in the Groves of Vrindavan
   kangra: {
     imageUrl:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Radha_and_Krishna_in_the_boat_of_love.jpg/800px-Radha_and_Krishna_in_the_boat_of_love.jpg',
-    sourceAttribution: 'Chandigarh Museum and Art Gallery / National Museum',
-    museumOrSite: 'Pahari Rajput Court Atelier, Himachal Pradesh'
+    sourceAttribution: 'Chandigarh Museum and Art Gallery',
+    museumOrSite: 'Pahari Rajput Court Atelier'
   },
-  // 6. Raghurajpur & Puri - Pattachitra Sacred Cloth Scroll of Lord Jagannath
   raghurajpur: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Pattachitra_art_form_of_Odisha.jpg/800px-Pattachitra_art_form_of_Odisha.jpg',
-    sourceAttribution: 'Odisha State Museum & Crafts Council of India',
-    museumOrSite: 'Raghurajpur Heritage Crafts Village, Puri, Odisha'
+    imageUrl: '/assets/raghurajpur.jpg',
+    sourceAttribution: 'Generated Visualization',
+    museumOrSite: 'Raghurajpur Heritage Crafts Village'
   },
   // 7. Kolkata & Santiniketan - Bharat Mata (Abanindranath Tagore, 1905 CE)
   kolkata: {
