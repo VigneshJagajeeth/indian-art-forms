@@ -1,0 +1,6 @@
+{
+  "name": "ChitraKala: Interactive Map of Indian Art History",
+  "description": "An interactive digital cartography and curatorial archive exploring the geographic spread, regional schools, master artists, and historical lineages of Indian art history.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
