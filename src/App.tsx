@@ -1,509 +1,238 @@
-import React, { useState, useMemo, useRef } from 'react';
-import { motion } from 'motion/react';
-import { ART_LOCATIONS, ArtLocation, INFLUENCE_PATHS } from './data/artData';
-import { Navbar } from './components/Navbar';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ART_LOCATIONS, ArtLocation } from './data/artData';
 import { IndiaMap } from './components/IndiaMap';
-import { TimelineBar, EraFilter } from './components/TimelineBar';
 import { ArtDossierModal } from './components/ArtDossierModal';
-import { ComparisonDrawer } from './components/ComparisonDrawer';
 import { ArtworkVisual } from './components/ArtworkVisual';
 import { LotusAnimation } from './components/LotusAnimation';
+import { Volume2, VolumeX, MapPin, Compass, Play, Sparkles } from 'lucide-react';
 import { getMasterpieceImage } from './data/artImages';
-import {
-  Search,
-  Filter,
-  Route,
-  Compass,
-  Sparkles,
-  BookOpen,
-  ArrowRight,
-  ArrowRightLeft,
-  Layers,
-  MapPin,
-  Palette,
-  ChevronLeft,
-  ChevronRight,
-  Eye,
-  ShieldCheck,
-  Landmark,
-  ExternalLink
-} from 'lucide-react';
 
 export default function App() {
+  const [hasEntered, setHasEntered] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
   const [selectedLocation, setSelectedLocation] = useState<ArtLocation | null>(null);
   const [inspectLocation, setInspectLocation] = useState<ArtLocation | null>(null);
-  const [selectedEra, setSelectedEra] = useState<EraFilter>('all');
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [searchQuery, setSearchQuery] = useState<string>('');
-  const [showInfluenceLines, setShowInfluenceLines] = useState<boolean>(true);
-  const [spotlightIndex, setSpotlightIndex] = useState<number>(0);
 
-  // Modals state
-  const [isCompareOpen, setIsCompareOpen] = useState<boolean>(false);
+  // Play audio when entering the experience
+  const handleEnter = () => {
+    setHasEntered(true);
+    if (audioRef.current) {
+      audioRef.current.play().then(() => {
+        setIsPlaying(true);
+      }).catch((e) => console.log("Audio autoplay prevented", e));
+    }
+  };
 
-  // Section references for smooth scrolling
-  const mapSectionRef = useRef<HTMLDivElement>(null);
-  const timelineSectionRef = useRef<HTMLDivElement>(null);
-  const catalogSectionRef = useRef<HTMLDivElement>(null);
-  const diffusionSectionRef = useRef<HTMLDivElement>(null);
-
-  const SPOTLIGHT_IDS = ['ajanta', 'kishangarh', 'thanjavur', 'madhubani', 'raghurajpur'];
-  const currentSpotlightLocation = useMemo(() => {
-    return ART_LOCATIONS.find((l) => l.id === SPOTLIGHT_IDS[spotlightIndex]) || ART_LOCATIONS[0];
-  }, [spotlightIndex]);
-
-  const QUICK_JUMPS = [
-    { id: 'ajanta', label: 'Ajanta Murals', icon: '🪷' },
-    { id: 'kishangarh', label: 'Bani Thani Miniature', icon: '👑' },
-    { id: 'thanjavur', label: 'Tanjore 22K Gold', icon: '⚜️' },
-    { id: 'madhubani', label: 'Mithila Folk Painting', icon: '🦚' },
-    { id: 'bhimbetka', label: 'Bhimbetka Rock Art', icon: '🏹' },
-    { id: 'raghurajpur', label: 'Odisha Pattachitra', icon: '📜' }
-  ];
-
-  const SEARCH_SUGGESTIONS = ['Ajanta', 'Gold Leaf', 'Madhubani', 'Bani Thani', 'Mughal', 'Bhimbetka', 'Pichwai', 'Lapis Lazuli'];
-
-  // Filter locations by search, era, and category
-  const filteredLocations = useMemo(() => {
-    return ART_LOCATIONS.filter((loc) => {
-      // Era filter
-      if (selectedEra !== 'all' && loc.eraCategory !== selectedEra) {
-        return false;
+  const toggleAudio = () => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
+      } else {
+        audioRef.current.play();
+        setIsPlaying(true);
       }
-      // Category filter
-      if (selectedCategory !== 'all' && loc.artCategory !== selectedCategory) {
-        return false;
-      }
-      // Search filter
-      if (searchQuery.trim() !== '') {
-        const query = searchQuery.toLowerCase();
-        const matchesName = loc.name.toLowerCase().includes(query);
-        const matchesState = loc.state.toLowerCase().includes(query);
-        const matchesMovement = loc.movementName.toLowerCase().includes(query);
-        const matchesArtist = loc.keyArtists.some((a) => a.toLowerCase().includes(query));
-        const matchesMasterpiece = loc.masterpiece.title.toLowerCase().includes(query);
-        const matchesPatronage = loc.patronage.toLowerCase().includes(query);
-        const matchesMedium = loc.masterpiece.medium.toLowerCase().includes(query);
-        const matchesPigment = loc.masterpiece.colorPalette.some(
-          (p) => p.name.toLowerCase().includes(query) || p.source.toLowerCase().includes(query)
-        );
-        if (
-          !matchesName &&
-          !matchesState &&
-          !matchesMovement &&
-          !matchesArtist &&
-          !matchesMasterpiece &&
-          !matchesPatronage &&
-          !matchesMedium &&
-          !matchesPigment
-        ) {
-          return false;
-        }
-      }
-      return true;
-    });
-  }, [selectedEra, selectedCategory, searchQuery]);
-
-  // Counts by era for timeline bar
-  const countsByEra = useMemo(() => {
-    const counts: Record<EraFilter, number> = {
-      all: ART_LOCATIONS.length,
-      prehistoric: 0,
-      ancient: 0,
-      medieval: 0,
-      miniatures: 0,
-      folk: 0,
-      modern: 0
-    };
-    ART_LOCATIONS.forEach((l) => {
-      counts[l.eraCategory] = (counts[l.eraCategory] || 0) + 1;
-    });
-    return counts;
-  }, []);
+    }
+  };
 
   const handleSelectLocation = (loc: ArtLocation) => {
     setSelectedLocation(loc);
     setInspectLocation(loc);
   };
 
-  const handleQuickJump = (locId: string) => {
-    const loc = ART_LOCATIONS.find((l) => l.id === locId);
-    if (loc) {
-      setSelectedLocation(loc);
-      handleScrollToMap();
-    }
-  };
-
-  const handleScrollToMap = () => {
-    mapSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const handleScrollToTimeline = () => {
-    timelineSectionRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const nextSpotlight = () => {
-    setSpotlightIndex((prev) => (prev + 1) % SPOTLIGHT_IDS.length);
-  };
-
-  const prevSpotlight = () => {
-    setSpotlightIndex((prev) => (prev - 1 + SPOTLIGHT_IDS.length) % SPOTLIGHT_IDS.length);
-  };
-
-  const spotlightImgInfo = getMasterpieceImage(currentSpotlightLocation.id);
+  if (!hasEntered) {
+    return (
+      <div className="fixed inset-0 bg-[#351b14] flex flex-col items-center justify-center z-50 text-amber-100 overflow-hidden">
+        {/* Entrance Lotus */}
+        <motion.div
+          animate={{ rotate: 360, scale: [1, 1.1, 1] }}
+          transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
+          className="absolute opacity-20 pointer-events-none"
+        >
+          <svg width="600" height="600" viewBox="0 0 100 100" className="text-amber-500">
+            <path d="M50 0 C70 40, 100 50, 100 50 C100 50, 70 60, 50 100 C30 60, 0 50, 0 50 C0 50, 30 40, 50 0 Z" fill="currentColor"/>
+            <path d="M14.6 14.6 C42.9 30.2, 85.4 14.6, 85.4 14.6 C85.4 14.6, 69.8 42.9, 85.4 85.4 C57.1 69.8, 14.6 85.4, 14.6 85.4 C14.6 85.4, 30.2 57.1, 14.6 14.6 Z" fill="currentColor"/>
+          </svg>
+        </motion.div>
+        
+        <div className="relative z-10 text-center space-y-8 flex flex-col items-center">
+          <div>
+            <h1 className="font-display text-6xl md:text-8xl tracking-tight text-amber-400 drop-shadow-lg">
+              Kalabhoomi
+            </h1>
+            <p className="font-serif italic text-amber-200/80 mt-4 text-lg md:text-xl tracking-widest uppercase">
+              The Living Cartography of Indian Art
+            </p>
+          </div>
+          <button
+            onClick={handleEnter}
+            className="group relative px-8 py-4 bg-amber-900/40 border border-amber-500/50 rounded-full hover:bg-amber-800/60 hover:scale-105 transition-all overflow-hidden flex items-center gap-3"
+          >
+            <div className="absolute inset-0 bg-gradient-to-r from-amber-500/0 via-amber-500/20 to-amber-500/0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 ease-in-out" />
+            <Play className="w-5 h-5 text-amber-300 fill-amber-300" />
+            <span className="font-serif text-lg text-amber-100 font-semibold tracking-wide">Enter the Realm</span>
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="min-h-screen bg-transparent text-stone-900 font-sans selection:bg-amber-900/20 selection:text-amber-950 relative">
-      {/* Background Scroll Animation */}
-      <LotusAnimation />
+    <div className="min-h-screen bg-[#f8f5f0] text-stone-900 font-sans selection:bg-amber-900/20 selection:text-amber-950 relative overflow-x-hidden">
       
-      {/* Top Bar Navigation */}
-      <Navbar
-        onOpenCompare={() => setIsCompareOpen(true)}
-        onScrollToMap={handleScrollToMap}
-        onScrollToTimeline={handleScrollToTimeline}
-        onToggleInfluence={() => setShowInfluenceLines(!showInfluenceLines)}
-        showInfluenceLines={showInfluenceLines}
+      {/* Background Music Player */}
+      <audio 
+        ref={audioRef} 
+        src="https://upload.wikimedia.org/wikipedia/commons/1/14/Tabla_solo.ogg" 
+        loop 
       />
+      
+      <LotusAnimation />
 
-      {/* Hero Editorial Section */}
-      <section className="relative px-4 sm:px-6 pt-12 pb-16 max-w-7xl mx-auto border-b border-stone-300/50 z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
-          {/* Left Column: Editorial Headline & Actions */}
-          <div className="lg:col-span-7 space-y-5">
-            {/* Clean unboxed metadata separator */}
-            <div className="flex flex-wrap items-center gap-2 text-xs uppercase tracking-widest text-stone-500 font-medium font-sans">
-              <span>HISTORICAL ATLAS OF INDIAN ART</span>
-              <span aria-hidden="true">·</span>
-              <span>10,000 BCE – 20TH CENTURY</span>
-              <span aria-hidden="true">·</span>
-              <span className="text-amber-900 font-semibold">18 REGIONAL TRADITIONS</span>
-            </div>
+      {/* Floating Audio Toggle */}
+      <button 
+        onClick={toggleAudio}
+        className="fixed bottom-6 right-6 z-40 p-4 bg-amber-900 text-amber-100 rounded-full shadow-2xl hover:bg-amber-800 transition-all border border-amber-700/50 group"
+      >
+        {isPlaying ? <Volume2 className="w-6 h-6 animate-pulse" /> : <VolumeX className="w-6 h-6 opacity-60" />}
+      </button>
 
-            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-amber-950 tracking-tight leading-[1.05] text-balance drop-shadow-sm">
-              Kalabhoomi: The Living Cartography of Indian Art
-            </h1>
-
-            <p className="text-base sm:text-xl font-serif text-stone-800 leading-relaxed text-balance">
-              From the 10,000 BCE Mesolithic rock art of Bhimbetka to 5th-century Buddhist frescoes at Ajanta,
-              gilded Tanjore temple icons, exquisite Rajput and Mughal court ateliers, and living tribal cosmologies —
-              explore the sacred geographies, mineral pigments, and reciprocal migrations that defined Indian visual heritage.
-            </p>
-
-            {/* Primary Action Buttons */}
-            <div className="flex flex-wrap items-center gap-3 pt-1">
-              <button
-                onClick={handleScrollToMap}
-                className="px-5 py-2.5 rounded-xl bg-amber-900 hover:bg-amber-950 text-white font-serif font-medium text-sm shadow-md transition-all flex items-center gap-2 cursor-pointer transform hover:scale-[1.01] active:scale-[0.99]"
-              >
-                <Compass className="w-4 h-4 text-amber-300" />
-                <span>Explore Interactive Atlas</span>
-              </button>
-            </div>
-          </div>
-
-          {/* Right Column: Featured Masterpiece Spotlight Card */}
-          <div className="lg:col-span-5">
-            <div className="bg-white rounded-2xl border border-stone-200 shadow-lg overflow-hidden flex flex-col">
-              {/* Spotlight Header Bar */}
-              <div className="px-4 py-2.5 bg-stone-900 text-stone-100 flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400" />
-                  <span className="font-serif font-bold text-amber-300">Curator’s Masterpiece Spotlight</span>
-                </div>
-                <div className="flex items-center gap-1 text-stone-400 font-mono text-[11px]">
-                  <span>{spotlightIndex + 1} / {SPOTLIGHT_IDS.length}</span>
-                  <div className="flex items-center ml-2">
-                    <button
-                      onClick={prevSpotlight}
-                      className="p-1 hover:text-white transition-colors cursor-pointer"
-                      title="Previous Masterpiece"
-                    >
-                      <ChevronLeft className="w-4 h-4" />
-                    </button>
-                    <button
-                      onClick={nextSpotlight}
-                      className="p-1 hover:text-white transition-colors cursor-pointer"
-                      title="Next Masterpiece"
-                    >
-                      <ChevronRight className="w-4 h-4" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              {/* Masterpiece Real Photograph Display */}
-              <div className="relative aspect-[4/3] w-full bg-stone-950 overflow-hidden group cursor-pointer" onClick={() => handleSelectLocation(currentSpotlightLocation)}>
-                <img
-                  src={currentSpotlightLocation.masterpiece.imageUrl || spotlightImgInfo.imageUrl}
-                  alt={currentSpotlightLocation.masterpiece.title}
-                  referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover transition-transform duration-1000 ease-in-out group-hover:scale-110 sepia-[0.15]"
-                  loading="eager"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/30 to-amber-900/10 pointer-events-none mix-blend-multiply" />
-
-                <div className="absolute top-3 left-3 bg-stone-950/80 backdrop-blur-md px-2.5 py-1 rounded text-[11px] font-sans font-medium text-amber-300 border border-amber-500/20">
-                  {currentSpotlightLocation.eraPeriod}
-                </div>
-
-                <div className="absolute bottom-3 left-3 right-3 text-left pointer-events-none">
-                  <p className="text-xs uppercase tracking-wider text-amber-300 font-sans font-medium">
-                    {currentSpotlightLocation.masterpiece.artist} · {currentSpotlightLocation.masterpiece.year}
-                  </p>
-                  <h3 className="text-lg font-serif font-bold text-white leading-tight mt-0.5">
-                    "{currentSpotlightLocation.masterpiece.title}"
-                  </h3>
-                </div>
-              </div>
-
-              {/* Card Meta & Mineral Pigments */}
-              <div className="p-4 space-y-3 bg-stone-50/60 border-t border-stone-100 text-left">
-                <div className="flex items-center justify-between text-xs text-stone-600">
-                  <span className="font-semibold text-stone-900">{currentSpotlightLocation.movementName}</span>
-                  <span className="text-stone-500 font-serif">📍 {currentSpotlightLocation.cityOrSite}, {currentSpotlightLocation.state}</span>
-                </div>
-
-                {/* Natural Pigments Strip */}
-                <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
-                  <span className="text-[10px] text-stone-500 uppercase tracking-wider shrink-0 mr-1">Pigments:</span>
-                  {currentSpotlightLocation.masterpiece.colorPalette.slice(0, 4).map((p, idx) => (
-                    <span
-                      key={idx}
-                      className="inline-flex items-center gap-1 text-[10px] bg-white px-2 py-0.5 rounded border border-stone-200 text-stone-700 shrink-0 shadow-2xs"
-                    >
-                      <span className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: p.hex }} />
-                      <span>{p.name}</span>
-                    </span>
-                  ))}
-                </div>
-
-                {/* Action button */}
-                <div className="pt-2 border-t border-stone-200/80 flex items-center justify-between">
-                  <span className="text-[10px] text-stone-500 line-clamp-1 max-w-[200px]">
-                    🏛️ {spotlightImgInfo.museumOrSite}
-                  </span>
-                  <button
-                    onClick={() => handleSelectLocation(currentSpotlightLocation)}
-                    className="text-xs font-serif font-bold text-amber-900 hover:text-amber-950 flex items-center gap-1 cursor-pointer"
-                  >
-                    <span>Examine Dossier</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
+      {/* Top Navbar Minimal */}
+      <nav className="fixed top-0 inset-x-0 z-40 bg-gradient-to-b from-stone-900/80 to-transparent backdrop-blur-sm p-6 flex justify-between items-center pointer-events-none">
+        <h1 className="font-display text-4xl text-amber-100 drop-shadow-md pointer-events-auto">Kalabhoomi</h1>
+        <div className="hidden md:flex font-serif text-amber-100/80 text-sm uppercase tracking-widest gap-6 pointer-events-auto">
+          <span>18 Regional Traditions</span>
+          <span>10,000 BCE – 20TH CENTURY</span>
         </div>
-      </section>
+      </nav>
 
-      {/* Main Interactive Map & Exploration Workspace */}
-      <section ref={mapSectionRef} className="px-4 sm:px-6 py-8 max-w-7xl mx-auto space-y-6">
-        {/* Search & Art Category Filters */}
-        <div className="space-y-3 bg-white/80 backdrop-blur-md p-4 rounded-2xl border border-stone-200 shadow-sm">
-          <div className="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-4">
-            {/* Live Search Input */}
-            <div className="relative flex-1 max-w-md">
-              <Search className="w-4 h-4 text-stone-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-              <input
-                type="text"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                placeholder="Search by state, tradition, artist, or pigment..."
-                className="w-full pl-9 pr-4 py-2 text-xs sm:text-sm bg-stone-50 border border-stone-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-amber-700/60 transition-all font-sans placeholder:text-stone-400"
-              />
-              {searchQuery && (
-                <button
-                  onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-stone-400 hover:text-stone-700"
-                >
-                  Clear
-                </button>
-              )}
-            </div>
-
-            {/* Interactive Category Filter Buttons (Functional Segmented Control) */}
-            <div className="flex items-center gap-1 overflow-x-auto pb-1 lg:pb-0 no-scrollbar">
-              {[
-                { id: 'all', label: 'All Styles' },
-                { id: 'Murals & Rock Art', label: 'Murals & Rock' },
-                { id: 'Court Miniatures', label: 'Court Miniatures' },
-                { id: 'Folk & Tribal Art', label: 'Folk & Tribal' },
-                { id: 'Sacred Textiles & Scrolls', label: 'Sacred Textiles' },
-                { id: 'Modern & Contemporary', label: 'Modern Art' }
-              ].map((cat) => {
-                const isActive = selectedCategory === cat.id;
-                return (
-                  <button
-                    key={cat.id}
-                    onClick={() => setSelectedCategory(cat.id)}
-                    className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors whitespace-nowrap cursor-pointer shrink-0 ${
-                      isActive
-                        ? 'bg-stone-900 text-white shadow-sm font-semibold'
-                        : 'text-stone-600 hover:text-stone-900 hover:bg-stone-100'
-                    }`}
-                  >
-                    {cat.label}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-
-          {/* Quick Search Suggestions */}
-          <div className="flex flex-wrap items-center gap-1.5 text-xs text-stone-500 pt-1 border-t border-stone-100">
-            <span className="text-[11px] font-sans uppercase tracking-wider text-stone-400 mr-1">Popular searches:</span>
-            {SEARCH_SUGGESTIONS.map((sug) => (
-              <button
-                key={sug}
-                onClick={() => setSearchQuery(sug)}
-                className={`px-2 py-0.5 rounded text-[11px] font-serif transition-colors cursor-pointer ${
-                  searchQuery.toLowerCase() === sug.toLowerCase()
-                    ? 'bg-amber-900 text-white'
-                    : 'bg-stone-100 hover:bg-stone-200 text-stone-700'
-                }`}
-              >
-                {sug}
-              </button>
-            ))}
+      {/* Immersive Map Hero Section */}
+      <section className="relative min-h-[90vh] flex flex-col md:flex-row items-center justify-center p-4 pt-24 pb-12 max-w-7xl mx-auto z-10 gap-12">
+        
+        {/* Left Side: The Interactive Map */}
+        <div className="w-full md:w-1/2 flex-shrink-0 relative">
+          <div className="absolute inset-0 -m-12 border-2 border-amber-900/10 rounded-full animate-spin-slow pointer-events-none border-dashed" />
+          <div className="absolute inset-0 -m-6 border border-rose-900/10 rounded-full animate-reverse-spin-slow pointer-events-none" />
+          <div className="bg-white/40 backdrop-blur-xl rounded-full p-8 shadow-2xl border-4 border-amber-900/20">
+            <IndiaMap
+              locations={ART_LOCATIONS}
+              selectedLocation={selectedLocation}
+              onSelectLocation={handleSelectLocation}
+              showInfluenceLines={true}
+              onToggleInfluenceLines={() => {}}
+              activeFilterCount={ART_LOCATIONS.length}
+            />
           </div>
         </div>
 
-        {/* Timeline Scrubber */}
-        <div ref={timelineSectionRef}>
-          <TimelineBar
-            selectedEra={selectedEra}
-            onSelectEra={setSelectedEra}
-            countsByEra={countsByEra}
-          />
-        </div>
-
-        {/* Interactive India Digital Map Component */}
-        <div className="relative">
-          <IndiaMap
-            locations={filteredLocations}
-            selectedLocation={selectedLocation}
-            onSelectLocation={handleSelectLocation}
-            showInfluenceLines={showInfluenceLines}
-            onToggleInfluenceLines={() => setShowInfluenceLines(!showInfluenceLines)}
-            activeFilterCount={filteredLocations.length}
-          />
-        </div>
-
-        {/* Quick Context Bar under Map */}
-        <div className="flex flex-wrap items-center justify-between gap-3 px-3 py-2 text-xs text-stone-600 border-t border-stone-200">
-          <div className="flex items-center gap-2">
-            <span className="font-semibold text-stone-800">Viewing {filteredLocations.length} of 18 Centers</span>
-            <span aria-hidden="true">·</span>
-            <span>Click any marker to open its curatorial dossier</span>
+        {/* Right Side: Featured Info (Replacing the bulky filters) */}
+        <div className="w-full md:w-1/2 flex flex-col items-center md:items-start text-center md:text-left space-y-6">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-amber-900/10 border border-amber-900/20 text-amber-950 text-xs font-bold tracking-widest uppercase mb-4">
+            <Sparkles className="w-4 h-4 text-amber-700" />
+            Sacred Geography
           </div>
-        </div>
-      </section>
+          
+          <h2 className="font-display text-5xl md:text-6xl text-[#3d251d] leading-tight">
+            Journey Through the Colors of India
+          </h2>
+          
+          <p className="font-serif text-lg text-[#5a4237] leading-relaxed max-w-lg">
+            Every stroke holds a history. Every pigment tells a tale. Click on the golden markers across the map to unveil the divine frescoes, intricate miniatures, and folk cosmologies born from this soil.
+          </p>
 
-
-
-      {/* Section 3: Comprehensive Archive Directory of Regional Schools */}
-      <section ref={catalogSectionRef} className="px-4 sm:px-6 py-12 max-w-7xl mx-auto border-t border-stone-200 space-y-8">
-        <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-          <div>
-            <span className="text-xs uppercase tracking-widest text-stone-500 font-medium block mb-1">
-              CURATORIAL CATALOGUE
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-serif font-bold text-stone-900 tracking-tight">
-              Catalogue of Master Schools & Movements
-            </h2>
-            <p className="text-sm font-serif text-stone-600 italic mt-1">
-              Select any regional school to examine its historical context, pigments, and masterworks.
-            </p>
-          </div>
-
-          <span className="text-xs font-mono text-stone-500 shrink-0">
-            {filteredLocations.length} Records Matching Filters
-          </span>
-        </div>
-
-        {/* Directory Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredLocations.map((loc, index) => (
-            <motion.div
-              key={loc.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
-              onClick={() => handleSelectLocation(loc)}
-              className="bg-[#fcf9f2] rounded-2xl border border-amber-900/10 overflow-hidden shadow-lg hover:shadow-2xl transition-all cursor-pointer group flex flex-col justify-between"
+          {/* Quick jump to a featured masterpiece */}
+          <div className="mt-8 p-6 bg-white/60 backdrop-blur-md rounded-2xl border border-amber-900/20 shadow-xl w-full max-w-sm">
+            <p className="text-xs uppercase tracking-widest text-amber-800 font-bold mb-3">Featured Masterpiece</p>
+            <div 
+              onClick={() => handleSelectLocation(ART_LOCATIONS[0])}
+              className="group relative h-48 rounded-xl overflow-hidden cursor-pointer"
             >
-              <div>
-                {/* Visual Artwork Thumbnail */}
-                <div className="relative aspect-[4/3] w-full overflow-hidden bg-stone-900">
-                  <ArtworkVisual location={loc} detailed={false} />
-                </div>
+              <img 
+                src="/assets/ajanta.jpg" 
+                alt="Ajanta"
+                className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110 sepia-[0.2]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent p-4 flex flex-col justify-end">
+                <span className="font-serif text-white text-lg">Bodhisattva Padmapani</span>
+                <span className="text-amber-300 text-xs tracking-wider">Ajanta Caves, 5th c. CE</span>
+              </div>
+            </div>
+          </div>
 
-                {/* Card Content */}
-                <div className="p-5 space-y-2.5">
-                  {/* Metadata unboxed text */}
-                  <div className="flex items-center gap-1.5 text-xs text-stone-500">
-                    <span className="font-semibold text-amber-800">{loc.state}</span>
-                    <span aria-hidden="true">·</span>
-                    <span>{loc.approximateYears}</span>
-                    <span aria-hidden="true">·</span>
-                    <span>{loc.artCategory.split('&')[0]}</span>
+        </div>
+      </section>
+
+      {/* Decorative Floral Divider */}
+      <div className="w-full flex justify-center py-12 opacity-40">
+        <svg width="200" height="40" viewBox="0 0 200 40" className="text-amber-900">
+          <path d="M100 20 C120 0, 180 0, 200 20 C180 40, 120 40, 100 20 C80 0, 20 0, 0 20 C20 40, 80 40, 100 20 Z" fill="currentColor"/>
+        </svg>
+      </div>
+
+      {/* The Gallery / Archive Section */}
+      <section className="px-4 sm:px-6 py-12 max-w-7xl mx-auto relative z-10">
+        <div className="text-center mb-16 space-y-4">
+          <h2 className="font-display text-4xl md:text-5xl text-[#3d251d]">
+            The Curatorial Archive
+          </h2>
+          <p className="font-serif text-stone-600 max-w-2xl mx-auto italic">
+            Browse through the 18 regional traditions. Select any card to explore its historical lineage, techniques, and geographic spread.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {ART_LOCATIONS.map((loc, idx) => {
+            const masterpieceData = getMasterpieceImage(loc.id);
+            return (
+              <motion.div
+                key={loc.id}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ duration: 0.8, delay: (idx % 3) * 0.2 }}
+                onClick={() => handleSelectLocation(loc)}
+                className="group relative bg-[#fdfaf5] rounded-tl-3xl rounded-br-3xl rounded-tr-md rounded-bl-md border-2 border-amber-900/10 hover:border-amber-900/30 overflow-hidden shadow-lg hover:shadow-2xl transition-all cursor-pointer flex flex-col"
+              >
+                {/* Image Header with floral decorative clip */}
+                <div className="relative h-56 overflow-hidden">
+                  <div className="absolute inset-0 bg-stone-900">
+                    <img 
+                      src={masterpieceData.imageUrl}
+                      alt={loc.masterpiece.title}
+                      className="w-full h-full object-cover opacity-90 transition-transform duration-1000 group-hover:scale-110 sepia-[0.1]"
+                    />
                   </div>
-
-                  <h3 className="text-xl font-serif font-bold text-stone-900 group-hover:text-amber-900 transition-colors leading-tight">
-                    {loc.movementName}
-                  </h3>
-
-                  <p className="text-xs text-stone-600 line-clamp-2 leading-relaxed">
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-[#fdfaf5]" />
+                </div>
+                
+                <div className="p-6 flex-1 flex flex-col relative -mt-12 z-10">
+                  <div className="bg-white/80 backdrop-blur-md border border-amber-900/10 rounded-xl p-4 shadow-sm mb-4">
+                    <span className="text-[10px] uppercase tracking-widest font-bold text-amber-700 block mb-1">
+                      {loc.state} • {loc.eraCategory}
+                    </span>
+                    <h3 className="font-display text-2xl text-[#3d251d] group-hover:text-amber-900 transition-colors">
+                      {loc.movementName}
+                    </h3>
+                  </div>
+                  <p className="font-serif text-stone-600 text-sm line-clamp-3 mb-6">
                     {loc.historicalContext}
                   </p>
+                  
+                  <div className="mt-auto border-t border-amber-900/10 pt-4 flex items-center justify-between text-xs text-amber-900 font-bold uppercase tracking-wider">
+                    <span className="flex items-center gap-1"><MapPin className="w-3 h-3"/> {loc.cityOrSite}</span>
+                    <span className="group-hover:translate-x-1 transition-transform">Explore →</span>
+                  </div>
                 </div>
-              </div>
-
-              {/* Card Footer */}
-              <div className="px-5 py-3.5 bg-stone-50 border-t border-stone-100 flex items-center justify-between text-xs text-stone-500">
-                <span className="italic font-serif truncate max-w-[190px]">
-                  Masterpiece: {loc.masterpiece.title}
-                </span>
-                <span className="font-semibold text-amber-900 group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
-                  Inspect
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </span>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            );
+          })}
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="border-t border-stone-300 bg-stone-100/90 py-10 px-4 sm:px-6">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-stone-600">
-          <div className="space-y-1 text-center md:text-left">
-            <span className="font-serif text-lg font-bold text-stone-900">Kalabhoomi</span>
-            <p className="text-stone-500">
-              Interactive Digital Map of Indian Art History · Survey of India Cartographic Archive
-            </p>
-          </div>
-
-          <div className="flex items-center gap-6">
-            <button
-              onClick={handleScrollToMap}
-              className="hover:text-stone-900 transition-colors cursor-pointer"
-            >
-              Interactive Map
-            </button>
-            <button
-              onClick={handleScrollToTimeline}
-              className="hover:text-stone-900 transition-colors cursor-pointer"
-            >
-              Chronological Timeline
-            </button>
-          </div>
-        </div>
-      </footer>
-
-      {/* Curatorial Dossier Modal */}
+      {/* Dossier Modal */}
       <ArtDossierModal
         location={inspectLocation}
         onClose={() => setInspectLocation(null)}
@@ -511,14 +240,6 @@ export default function App() {
           setSelectedLocation(connectedLoc);
           setInspectLocation(connectedLoc);
         }}
-      />
-
-      {/* Side-by-Side Comparison Drawer */}
-      <ComparisonDrawer
-        isOpen={isCompareOpen}
-        onClose={() => setIsCompareOpen(false)}
-        initialLocA={selectedLocation || ART_LOCATIONS[0]}
-        initialLocB={ART_LOCATIONS[3]}
       />
     </div>
   );

@@ -10,47 +10,44 @@ export interface MasterpieceImageMap {
 export const ART_MASTERPIECE_IMAGES: Record<string, MasterpieceImageMap> = {
   // 1. Ajanta Caves - Bodhisattva Padmapani Cave 1 (5th c. CE, Gupta-Vakataka)
   ajanta: {
-    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Padmapani%2C_Cave_1%2C_Ajanta_Caves.jpg/800px-Padmapani%2C_Cave_1%2C_Ajanta_Caves.jpg',
+    imageUrl: '/assets/ajanta.jpg',
     sourceAttribution: 'Archaeological Survey of India Archive',
     museumOrSite: 'Ajanta Cave 1, Aurangabad District'
   },
   madhubani: {
-    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Madhubani_painting.jpg/800px-Madhubani_painting.jpg',
+    imageUrl: '/assets/madhubani.jpg',
     sourceAttribution: 'Mithila Art Archive / Public Domain',
     museumOrSite: 'Mithila Cultural Heritage'
   },
   thanjavur: {
-    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Thanjavur_painting_of_Saraswati.jpg/800px-Thanjavur_painting_of_Saraswati.jpg',
+    imageUrl: '/assets/thanjavur.jpg',
     sourceAttribution: 'National Museum, New Delhi',
     museumOrSite: 'Tanjore Royal Collection'
   },
   kishangarh: {
-    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Bani_Thani.jpg/800px-Bani_Thani.jpg',
+    imageUrl: '/assets/kishangarh.jpg',
     sourceAttribution: 'National Museum, New Delhi',
     museumOrSite: 'Kishangarh Royal Collection'
   },
   kangra: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Radha_and_Krishna_in_the_boat_of_love.jpg/800px-Radha_and_Krishna_in_the_boat_of_love.jpg',
+    imageUrl: '/assets/kangra.jpg',
     sourceAttribution: 'Chandigarh Museum and Art Gallery',
     museumOrSite: 'Pahari Rajput Court Atelier'
   },
   raghurajpur: {
-    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Pattachitra_Painting.jpg/800px-Pattachitra_Painting.jpg',
+    imageUrl: '/assets/raghurajpur.jpg',
     sourceAttribution: 'Odisha State Museum',
     museumOrSite: 'Raghurajpur Heritage Crafts Village'
   },
   // 7. Kolkata & Santiniketan - Bharat Mata (Abanindranath Tagore, 1905 CE)
   kolkata: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Bharat_Mata_by_Abanindranath_Tagore.jpg/800px-Bharat_Mata_by_Abanindranath_Tagore.jpg',
+    imageUrl: '/assets/kolkata.jpg',
     sourceAttribution: 'Rabindra Bharati Society / Victoria Memorial Hall',
     museumOrSite: 'Bengal School Archive, Kolkata, West Bengal'
   },
   // 8. Warli Ancestral Lands - The Great Tarpa Dance & Circle of Life
   warli: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/90/Warli_painting_Maharashtra_India.jpg/800px-Warli_painting_Maharashtra_India.jpg',
+    imageUrl: '/assets/warli.jpg',
     sourceAttribution: 'Devi Art Foundation & Tribal Cooperative Marketing Development Federation',
     museumOrSite: 'Warli Adivasi Heritage, Dahanu, Maharashtra'
   },
