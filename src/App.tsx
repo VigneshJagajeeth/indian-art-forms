@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useRef } from 'react';
+import { motion } from 'motion/react';
 import { ART_LOCATIONS, ArtLocation, INFLUENCE_PATHS } from './data/artData';
 import { Navbar } from './components/Navbar';
 import { IndiaMap } from './components/IndiaMap';
@@ -6,6 +7,7 @@ import { TimelineBar, EraFilter } from './components/TimelineBar';
 import { ArtDossierModal } from './components/ArtDossierModal';
 import { ComparisonDrawer } from './components/ComparisonDrawer';
 import { ArtworkVisual } from './components/ArtworkVisual';
+import { LotusAnimation } from './components/LotusAnimation';
 import { getMasterpieceImage } from './data/artImages';
 import {
   Search,
@@ -151,7 +153,10 @@ export default function App() {
   const spotlightImgInfo = getMasterpieceImage(currentSpotlightLocation.id);
 
   return (
-    <div className="min-h-screen bg-[#FAF8F5] text-stone-900 font-sans selection:bg-amber-900/20 selection:text-amber-950">
+    <div className="min-h-screen bg-transparent text-stone-900 font-sans selection:bg-amber-900/20 selection:text-amber-950 relative">
+      {/* Background Scroll Animation */}
+      <LotusAnimation />
+      
       {/* Top Bar Navigation */}
       <Navbar
         onOpenCompare={() => setIsCompareOpen(true)}
@@ -162,8 +167,8 @@ export default function App() {
       />
 
       {/* Hero Editorial Section */}
-      <section className="relative px-4 sm:px-6 pt-8 pb-10 max-w-7xl mx-auto border-b border-stone-200">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+      <section className="relative px-4 sm:px-6 pt-12 pb-16 max-w-7xl mx-auto border-b border-stone-300/50 z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
           {/* Left Column: Editorial Headline & Actions */}
           <div className="lg:col-span-7 space-y-5">
             {/* Clean unboxed metadata separator */}
@@ -175,11 +180,11 @@ export default function App() {
               <span className="text-amber-900 font-semibold">18 REGIONAL TRADITIONS</span>
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-stone-900 tracking-tight leading-[1.08] text-balance">
+            <h1 className="font-display text-5xl sm:text-6xl lg:text-7xl font-bold text-amber-950 tracking-tight leading-[1.05] text-balance drop-shadow-sm">
               Kalabhoomi: The Living Cartography of Indian Art
             </h1>
 
-            <p className="text-base sm:text-lg font-serif text-stone-700 leading-relaxed text-balance">
+            <p className="text-base sm:text-xl font-serif text-stone-800 leading-relaxed text-balance">
               From the 10,000 BCE Mesolithic rock art of Bhimbetka to 5th-century Buddhist frescoes at Ajanta,
               gilded Tanjore temple icons, exquisite Rajput and Mughal court ateliers, and living tribal cosmologies —
               explore the sacred geographies, mineral pigments, and reciprocal migrations that defined Indian visual heritage.
@@ -233,10 +238,10 @@ export default function App() {
                   src={currentSpotlightLocation.masterpiece.imageUrl || spotlightImgInfo.imageUrl}
                   alt={currentSpotlightLocation.masterpiece.title}
                   referrerPolicy="no-referrer"
-                  className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-1000 ease-in-out group-hover:scale-110 sepia-[0.15]"
                   loading="eager"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/20 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-stone-950/90 via-stone-950/30 to-amber-900/10 pointer-events-none mix-blend-multiply" />
 
                 <div className="absolute top-3 left-3 bg-stone-950/80 backdrop-blur-md px-2.5 py-1 rounded text-[11px] font-sans font-medium text-amber-300 border border-amber-500/20">
                   {currentSpotlightLocation.eraPeriod}
@@ -418,12 +423,16 @@ export default function App() {
         </div>
 
         {/* Directory Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredLocations.map((loc) => (
-            <div
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredLocations.map((loc, index) => (
+            <motion.div
               key={loc.id}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-50px" }}
+              transition={{ duration: 0.6, delay: index * 0.1, ease: "easeOut" }}
               onClick={() => handleSelectLocation(loc)}
-              className="bg-white rounded-2xl border border-stone-200 overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between"
+              className="bg-[#fcf9f2] rounded-2xl border border-amber-900/10 overflow-hidden shadow-lg hover:shadow-2xl transition-all cursor-pointer group flex flex-col justify-between"
             >
               <div>
                 {/* Visual Artwork Thumbnail */}
@@ -462,7 +471,7 @@ export default function App() {
                   <ArrowRight className="w-3.5 h-3.5" />
                 </span>
               </div>
-            </div>
+            </motion.div>
           ))}
         </div>
       </section>

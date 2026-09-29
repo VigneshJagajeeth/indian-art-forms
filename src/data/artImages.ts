@@ -10,23 +10,23 @@ export interface MasterpieceImageMap {
 export const ART_MASTERPIECE_IMAGES: Record<string, MasterpieceImageMap> = {
   // 1. Ajanta Caves - Bodhisattva Padmapani Cave 1 (5th c. CE, Gupta-Vakataka)
   ajanta: {
-    imageUrl: '/assets/ajanta.jpg',
-    sourceAttribution: 'Generated Visualization',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1a/Padmapani%2C_Cave_1%2C_Ajanta_Caves.jpg/800px-Padmapani%2C_Cave_1%2C_Ajanta_Caves.jpg',
+    sourceAttribution: 'Archaeological Survey of India Archive',
     museumOrSite: 'Ajanta Cave 1, Aurangabad District'
   },
   madhubani: {
-    imageUrl: '/assets/madhubani.jpg',
-    sourceAttribution: 'Generated Visualization',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/cd/Madhubani_painting.jpg/800px-Madhubani_painting.jpg',
+    sourceAttribution: 'Mithila Art Archive / Public Domain',
     museumOrSite: 'Mithila Cultural Heritage'
   },
   thanjavur: {
-    imageUrl: '/assets/thanjavur.jpg',
-    sourceAttribution: 'Generated Visualization',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Thanjavur_painting_of_Saraswati.jpg/800px-Thanjavur_painting_of_Saraswati.jpg',
+    sourceAttribution: 'National Museum, New Delhi',
     museumOrSite: 'Tanjore Royal Collection'
   },
   kishangarh: {
-    imageUrl: '/assets/kishangarh.jpg',
-    sourceAttribution: 'Generated Visualization',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5f/Bani_Thani.jpg/800px-Bani_Thani.jpg',
+    sourceAttribution: 'National Museum, New Delhi',
     museumOrSite: 'Kishangarh Royal Collection'
   },
   kangra: {
@@ -36,8 +36,8 @@ export const ART_MASTERPIECE_IMAGES: Record<string, MasterpieceImageMap> = {
     museumOrSite: 'Pahari Rajput Court Atelier'
   },
   raghurajpur: {
-    imageUrl: '/assets/raghurajpur.jpg',
-    sourceAttribution: 'Generated Visualization',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/52/Pattachitra_Painting.jpg/800px-Pattachitra_Painting.jpg',
+    sourceAttribution: 'Odisha State Museum',
     museumOrSite: 'Raghurajpur Heritage Crafts Village'
   },
   // 7. Kolkata & Santiniketan - Bharat Mata (Abanindranath Tagore, 1905 CE)
