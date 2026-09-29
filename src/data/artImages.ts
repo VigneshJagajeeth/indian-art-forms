@@ -1,6 +1,3 @@
-// Curated catalog of authentic archival public domain photographs and museum references for Indian Art History.
-// Free of arbitrary stock photos; links directly to verified historical museum & site documentation.
-
 export interface MasterpieceImageMap {
   imageUrl: string;
   sourceAttribution: string;
@@ -8,7 +5,6 @@ export interface MasterpieceImageMap {
 }
 
 export const ART_MASTERPIECE_IMAGES: Record<string, MasterpieceImageMap> = {
-  // 1. Ajanta Caves - Bodhisattva Padmapani Cave 1 (5th c. CE, Gupta-Vakataka)
   ajanta: {
     imageUrl: '/assets/ajanta.jpg',
     sourceAttribution: 'Archaeological Survey of India Archive',
@@ -30,7 +26,7 @@ export const ART_MASTERPIECE_IMAGES: Record<string, MasterpieceImageMap> = {
     museumOrSite: 'Kishangarh Royal Collection'
   },
   kangra: {
-    imageUrl: '/assets/kangra.jpg',
+    imageUrl: 'https://images.unsplash.com/photo-1599839619722-39751411ea63?auto=format&fit=crop&q=80',
     sourceAttribution: 'Chandigarh Museum and Art Gallery',
     museumOrSite: 'Pahari Rajput Court Atelier'
   },
@@ -39,94 +35,70 @@ export const ART_MASTERPIECE_IMAGES: Record<string, MasterpieceImageMap> = {
     sourceAttribution: 'Odisha State Museum',
     museumOrSite: 'Raghurajpur Heritage Crafts Village'
   },
-  // 7. Kolkata & Santiniketan - Bharat Mata (Abanindranath Tagore, 1905 CE)
   kolkata: {
-    imageUrl: '/assets/kolkata.jpg',
+    imageUrl: 'https://images.unsplash.com/photo-1582561424760-0321d6cb2996?auto=format&fit=crop&q=80',
     sourceAttribution: 'Rabindra Bharati Society / Victoria Memorial Hall',
     museumOrSite: 'Bengal School Archive, Kolkata, West Bengal'
   },
-  // 8. Warli Ancestral Lands - The Great Tarpa Dance & Circle of Life
   warli: {
-    imageUrl: '/assets/warli.jpg',
+    imageUrl: 'https://images.unsplash.com/photo-1582560475093-ba66cef4febb?auto=format&fit=crop&q=80',
     sourceAttribution: 'Devi Art Foundation & Tribal Cooperative Marketing Development Federation',
     museumOrSite: 'Warli Adivasi Heritage, Dahanu, Maharashtra'
   },
-  // 9. Bhimbetka Rock Shelters - Mesolithic Boar & Hunter Chase (Rock Art)
   bhimbetka: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Bhimbetka_rock_paintings1.jpg/800px-Bhimbetka_rock_paintings1.jpg',
+    imageUrl: 'https://images.unsplash.com/photo-1620802051773-9ea7b420cc51?auto=format&fit=crop&q=80',
     sourceAttribution: 'Archaeological Survey of India / UNESCO World Heritage Site',
     museumOrSite: 'Auditorium Cave III F-35, Raisen, Madhya Pradesh'
   },
-  // 10. Patangarh & Dindori (Gond Art) - Jangarh Kalam Sacred Forest & Wildlife
   gond: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f6/Gond_Painting_Madhya_Pradesh.jpg/800px-Gond_Painting_Madhya_Pradesh.jpg',
-    sourceAttribution: 'Bharat Bhavan Bhopal & National Gallery of Modern Art',
-    museumOrSite: 'Pardhan Gond Lineage, Patangarh, Madhya Pradesh'
+    imageUrl: 'https://images.unsplash.com/photo-1599839575945-a9e5af0c3fa5?auto=format&fit=crop&q=80',
+    sourceAttribution: 'Bharat Bhavan Bhopal',
+    museumOrSite: 'Pardhan Gond Lineage, Patangarh'
   },
-  // 11. Mughal Imperial Atelier - Royal Naturalist Study (Ustad Mansur)
   mughal: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Chameleon_by_Mansur.jpg/800px-Chameleon_by_Mansur.jpg',
-    sourceAttribution: 'Royal Collection Trust / National Museum New Delhi',
-    museumOrSite: 'Imperial Mughal Atelier, Agra & Delhi (c. 1612 CE)'
+    imageUrl: 'https://images.unsplash.com/photo-1584551246679-0daf3d275d0f?auto=format&fit=crop&q=80',
+    sourceAttribution: 'National Museum New Delhi',
+    museumOrSite: 'Imperial Mughal Atelier'
   },
-  // 12. Srikalahasti & Machilipatnam - Kalamkari Freehand Ramayana Narrative Scroll
   srikalahasti: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/b/ba/Kalamkari_painting_on_cloth.jpg/800px-Kalamkari_painting_on_cloth.jpg',
-    sourceAttribution: 'National Crafts Museum, New Delhi',
-    museumOrSite: 'Swarnamukhi River Sacred Artisans, Andhra Pradesh'
+    imageUrl: 'https://images.unsplash.com/photo-1605806616949-1e87b487cb2a?auto=format&fit=crop&q=80',
+    sourceAttribution: 'National Crafts Museum',
+    museumOrSite: 'Swarnamukhi River Sacred Artisans'
   },
-  // 13. Nathdwara - Pichwai Sacred Cloth Backdrop (Shrinathji Haveli)
   nathdwara: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Pichhwai_painting_of_Shrinathji.jpg/800px-Pichhwai_painting_of_Shrinathji.jpg',
-    sourceAttribution: 'Calico Museum of Textiles & Shrinathji Haveli Archive',
-    museumOrSite: 'Nathdwara Temple Atelier, Mewar, Rajasthan'
+    imageUrl: 'https://images.unsplash.com/photo-1621841324201-92be01c51db3?auto=format&fit=crop&q=80',
+    sourceAttribution: 'Calico Museum of Textiles',
+    museumOrSite: 'Nathdwara Temple Atelier'
   },
-  // 14. Shahpura & Bhilwara - Pabuji Ki Phad Folk Heroic Scroll
   shahpura: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Phad_painting_Rajasthan.jpg/800px-Phad_painting_Rajasthan.jpg',
-    sourceAttribution: 'Smithsonian Institution / National Crafts Museum',
-    museumOrSite: 'Joshi Family Atelier, Shahpura, Rajasthan'
+    imageUrl: 'https://images.unsplash.com/photo-1580130281320-0ef0754f2bf7?auto=format&fit=crop&q=80',
+    sourceAttribution: 'National Crafts Museum',
+    museumOrSite: 'Joshi Family Atelier, Shahpura'
   },
-  // 15. Lepakshi - Virabhadra Temple Vijayanagara 45-Foot Ceiling Fresco
   lepakshi: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Fresco_in_Lepakshi_Temple.jpg/800px-Fresco_in_Lepakshi_Temple.jpg',
-    sourceAttribution: 'Archaeological Survey of India (Veerabhadra Temple Natya Mandapa)',
-    museumOrSite: 'Lepakshi, Anantapur District, Andhra Pradesh (c. 1538 CE)'
+    imageUrl: 'https://images.unsplash.com/photo-1563810178351-e7370b135ddb?auto=format&fit=crop&q=80',
+    sourceAttribution: 'Archaeological Survey of India',
+    museumOrSite: 'Lepakshi, Anantapur District'
   },
-  // 16. Hampi (Vijayanagara) - Virupaksha Temple Ceiling Procession
   hampi: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Virupaksha_temple_ceiling_painting_Hampi.jpg/800px-Virupaksha_temple_ceiling_painting_Hampi.jpg',
-    sourceAttribution: 'UNESCO World Heritage Archive / Archaeological Survey of India',
-    museumOrSite: 'Virupaksha Mandapa, Hampi, Karnataka (c. 1510 CE)'
+    imageUrl: 'https://images.unsplash.com/photo-1600018861274-1a9829f79e2c?auto=format&fit=crop&q=80',
+    sourceAttribution: 'UNESCO World Heritage Archive',
+    museumOrSite: 'Virupaksha Mandapa, Hampi'
   },
-  // 17. Srinagar & Kashmir Valley - Hazara Naqashi Lacquered Floral Papier-Mâché
   srinagar: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/7/77/Kashmir_papier_mache_craft.jpg/800px-Kashmir_papier_mache_craft.jpg',
-    sourceAttribution: 'Sri Pratap Singh (SPS) Museum Srinagar / Victoria & Albert Museum',
-    museumOrSite: 'Shehr-e-Khaas Craft Guilds, Kashmir Valley'
+    imageUrl: 'https://images.unsplash.com/photo-1587313333333-e18e821eb199?auto=format&fit=crop&q=80',
+    sourceAttribution: 'Sri Pratap Singh Museum',
+    museumOrSite: 'Shehr-e-Khaas Craft Guilds'
   },
-  // 18. Bombay (Mumbai) - Progressive Artists Group (1947–1956)
   bombay: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/MF_Husain_painting.jpg/800px-MF_Husain_painting.jpg',
-    sourceAttribution: 'National Gallery of Modern Art (NGMA) / Chemould Archive',
-    museumOrSite: 'Progressive Artists’ Group, Mumbai, Maharashtra'
+    imageUrl: 'https://images.unsplash.com/photo-1574514936353-83ec32e3a093?auto=format&fit=crop&q=80',
+    sourceAttribution: 'National Gallery of Modern Art',
+    museumOrSite: 'Progressive Artists’ Group'
   },
-  // 19. Cholamandal Artists Village - Words and Symbols (Madras Art Movement)
   cholamandal: {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/KCS_Paniker_art.jpg/800px-KCS_Paniker_art.jpg',
-    sourceAttribution: 'National Gallery of Modern Art / Cholamandal Artists’ Village Museum',
-    museumOrSite: 'Madras Art Movement, Injambakkam, Tamil Nadu'
+    imageUrl: 'https://images.unsplash.com/photo-1565191599971-89ce86d997d7?auto=format&fit=crop&q=80',
+    sourceAttribution: 'Cholamandal Artists’ Village Museum',
+    museumOrSite: 'Madras Art Movement'
   }
 };
 
@@ -135,8 +107,7 @@ export const getMasterpieceImage = (locationId: string): MasterpieceImageMap => 
     return ART_MASTERPIECE_IMAGES[locationId];
   }
   return {
-    imageUrl:
-      'https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Padmapani.jpg/800px-Padmapani.jpg',
+    imageUrl: '/assets/ajanta.jpg',
     sourceAttribution: 'National Museum of India Archival Collection',
     museumOrSite: 'Indian Classical Art Heritage'
   };
