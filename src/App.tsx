@@ -176,7 +176,7 @@ export default function App() {
             </div>
 
             <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-bold text-stone-900 tracking-tight leading-[1.08] text-balance">
-              Chitrakala: The Living Cartography of Indian Art
+              Kalabhoomi: The Living Cartography of Indian Art
             </h1>
 
             <p className="text-base sm:text-lg font-serif text-stone-700 leading-relaxed text-balance">
@@ -471,7 +471,7 @@ export default function App() {
       <footer className="border-t border-stone-300 bg-stone-100/90 py-10 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6 text-xs text-stone-600">
           <div className="space-y-1 text-center md:text-left">
-            <span className="font-serif text-lg font-bold text-stone-900">ChitraKala</span>
+            <span className="font-serif text-lg font-bold text-stone-900">Kalabhoomi</span>
             <p className="text-stone-500">
               Interactive Digital Map of Indian Art History · Survey of India Cartographic Archive
             </p>

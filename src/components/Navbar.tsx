@@ -28,7 +28,7 @@ export const Navbar: React.FC<NavbarProps> = ({
           }}
           className="text-2xl font-serif font-bold tracking-tight text-stone-900 hover:text-amber-900 transition-colors"
         >
-          ChitraKala
+          Kalabhoomi
         </a>
 
         {/* Zone 2: Clean text navigation links */}
